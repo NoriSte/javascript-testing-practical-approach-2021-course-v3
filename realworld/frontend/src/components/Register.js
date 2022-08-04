@@ -80,7 +80,7 @@ class Register extends React.Component {
                       placeholder={strings.username}
                       value={this.props.username}
                       onChange={this.changeUsername}
-                      // data-testid="username"
+                      data-testid="username"
                       />
                   </fieldset>
 
@@ -91,7 +91,7 @@ class Register extends React.Component {
                       placeholder={strings.email}
                       value={this.props.email}
                       onChange={this.changeEmail}
-                      // data-testid="email"
+                      data-testid="email"
                     />
                   </fieldset>
 
@@ -102,7 +102,7 @@ class Register extends React.Component {
                       placeholder={strings.password}
                       value={this.props.password}
                       onChange={this.changePassword}
-                      // data-testid="password"
+                      data-testid="password"
                       />
                   </fieldset>
 
@@ -110,7 +110,7 @@ class Register extends React.Component {
                     className="btn btn-lg btn-primary pull-xs-right"
                     type="submit"
                     disabled={this.props.inProgress}
-                    // data-testid="signup-button"
+                    data-testid="signup-button"
                     >
                     {strings.signUp}
                   </button>

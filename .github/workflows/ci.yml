@@ -1,0 +1,47 @@
+# .github/workflow/ci.yml
+name: Cypress Tests
+on:
+  pull_request:
+
+jobs:
+  test:
+    name: Cypress tests
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        # uses: bahmutov/npm-install@v1
+        run: npm install --legacy-peer-deps
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/Cypress
+          key: my-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Run Tests
+        uses: replayio/action-cypress@v0.2.3
+        with:
+          # An API key (usually a Team API Key) to use to upload replays.
+          # Configure this via GitHub repo settings.
+          api-key: rwk_yMZyfiLd4na4AypdZ6xPJIaSxOJnQzb2kuaYxgeYceX
+          # The Replay browser to use: 'Replay Firefox' or 'Replay Chromium'
+          browser: 'Replay Firefox'
+          # An optional command to run your tests.
+          command: npm run test:replay
+          # When true, replays will be accessible to anyone with the link.
+          # This is useful for open source projects that want to collaborate
+          # with external users.
+          public: true
+          # When true, replays of both passed and failed tests are uploaded
+          upload-all: true
+          # An optional working directory which is useful if the project being
+          # tested resides in a subdirectory of the repository
+          working-directory: .

@@ -1,5 +1,4 @@
 node_modules
 cypress/videos
 yarn.lock
-package-lock.json
 .DS_Store

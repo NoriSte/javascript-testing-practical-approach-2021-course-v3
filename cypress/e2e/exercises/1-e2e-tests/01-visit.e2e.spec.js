@@ -19,5 +19,6 @@ context('The site', () => {
   it('Should work', () => {
     // Cypress docs https://docs.cypress.io/guides/overview/why-cypress
     // ...
+    expect(true).to.equal(false)
   })
 })
