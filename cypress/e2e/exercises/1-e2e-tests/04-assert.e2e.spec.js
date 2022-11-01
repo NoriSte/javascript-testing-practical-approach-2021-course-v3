@@ -29,7 +29,7 @@
  * - A bad test is worse then not having it
  */
 
-context('The sign up page', () => {
+ context('The sign up page', () => {
   beforeEach(() => {
     // adapt the viewport, allows the instructor to have more vertical windows when sharing the screen
     cy.viewport(600, 900)
@@ -37,6 +37,36 @@ context('The sign up page', () => {
   })
 
   it('Should allow registering and redirects the user to the home page', () => {
-    // ...
+    const random = Math.round(Math.random() * 1000000)
+
+    // this is an E2E test, hence the back-end is a real one. The same user can't be registered more
+    // than once, we need to generate random users
+    cy.get('.form-control').eq(0).type(`foo${random}`)
+    cy.get('.form-control').eq(1).type(`foo${random}@bar.com`)
+    cy.get('.form-control').eq(2).type('bazbazbaz')
+
+    cy.get('button').click()
+
+    // waiting for the redirect to the home page
+    cy.wait(10000)
+
+    cy.location().should(location => expect(location.pathname).to.eq('/'))
+  })
+
+  it('Playground: avoid unnecessary timeout', function () {
+    const random = Math.round(Math.random() * 1000000)
+
+    cy.get('.form-control').eq(0).type(`foo${random}`)
+    cy.get('.form-control').eq(1).type(`foo${random}@bar.com`)
+    cy.get('.form-control').eq(2).type('bazbazbaz')
+
+    cy.get('button').click()
+
+    cy.location({ timeout: 10000 })
+      // if `should` fails, it retries the previous, side-effects free, command
+      .should(location => expect(location.pathname).to.eq('/'))
+
+    // log the Cypress commands
+    console.log(this.test.commands)
   })
 })

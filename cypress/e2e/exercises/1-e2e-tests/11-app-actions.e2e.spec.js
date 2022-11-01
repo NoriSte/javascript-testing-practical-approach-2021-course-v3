@@ -11,7 +11,24 @@
  */
 
 Cypress.Commands.add('register', { prevSubject: 'optional' }, function (_subject) {
-  // ...
+  cy.visit('/register')
+
+  const random = Math.round(Math.random() * 1000000)
+  const credentials = {
+    username: `foo${random}`,
+    email: `foo${random}@bar.com`,
+    password: 'bazbazbaz',
+  }
+
+  cy.intercept('POST', '**/api.realworld.io/api/users').as('signup-request')
+
+  cy.window().its('appActions').invoke('signup', credentials)
+
+  cy.wait('@signup-request').then(interception => {
+    // ... all the payload assertions are skipped for brevity...
+  })
+
+  cy.findByText('New Post', { timeout: 10000 }).should('be.visible')
 })
 
 context('The New Post page', () => {

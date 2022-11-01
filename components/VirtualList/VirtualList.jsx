@@ -16,6 +16,7 @@ import { ItemsRenderer } from "./ItemsRenderer";
 const noop = () => {};
 
 export const VirtualList = (props) => {
+  return <div />
   const {
     items,
     getItemHeights,

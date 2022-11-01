@@ -27,13 +27,13 @@ jobs:
           key: my-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Run Tests
-        uses: replayio/action-cypress@v0.2.3
+        uses: replayio/action-cypress@v0.2.4
         with:
           # An API key (usually a Team API Key) to use to upload replays.
           # Configure this via GitHub repo settings.
           api-key: rwk_yMZyfiLd4na4AypdZ6xPJIaSxOJnQzb2kuaYxgeYceX
           # The Replay browser to use: 'Replay Firefox' or 'Replay Chromium'
-          browser: 'Replay Firefox'
+          browser: 'Replay Chromium'
           # An optional command to run your tests.
           command: npm run test:replay
           # When true, replays will be accessible to anyone with the link.

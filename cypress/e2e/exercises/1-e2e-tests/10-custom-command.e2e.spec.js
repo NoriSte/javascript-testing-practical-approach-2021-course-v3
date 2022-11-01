@@ -22,7 +22,50 @@
 const noLog = { log: false }
 
 Cypress.Commands.add('register', { prevSubject: 'optional' }, function (_subject) {
-  // ...
+  cy.log('**Automatic registration start**')
+
+  cy.visit('/register', noLog)
+
+  const random = Math.round(Math.random() * 1000000)
+
+  cy.findByPlaceholderText('Username', noLog).type(`foo${random}`, {
+    delay: 0,
+    log: false,
+  })
+  cy.findByPlaceholderText('Email', noLog).type(`foo${random}@bar.com`, {
+    delay: 0,
+    log: false,
+  })
+  cy.findByPlaceholderText('Password', noLog).type('bazbazbaz', { delay: 0, log: false })
+
+  cy.intercept('POST', '**/api.realworld.io/api/users').as('signup-request')
+
+  cy.get('form', noLog).within(() => cy.findByText('Sign up', noLog).click(noLog))
+
+  cy.wait('@signup-request', noLog).then(interception => {
+    // assert about the request payload
+    expect(interception.request.body).to.deep.eq({
+      user: {
+        username: `foo${random}`,
+        email: `foo${random}@bar.com`,
+        password: 'bazbazbaz',
+      },
+    })
+
+    // assert about the response status code
+    expect(interception.response.statusCode).to.eq(200)
+
+    // assert about the response payload
+    const responseBody = interception.response.body
+    expect(responseBody.user).to.have.property('username', `foo${random}`)
+    expect(responseBody.user).to.have.property('email', `foo${random}@bar.com`)
+    // we can't assert about the payload content because it's randomic
+    expect(responseBody.user).to.have.property('token').and.to.be.a('string').and.not.to.be.empty
+  })
+
+  cy.findByText('No articles are here... yet.', { log: false }).should('be.visible')
+
+  cy.log('**Automatic registration success**')
 })
 
 context('The New Post page', () => {

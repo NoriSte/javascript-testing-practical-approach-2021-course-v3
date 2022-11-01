@@ -16,9 +16,13 @@
  */
 
 context('The site', () => {
+  beforeEach(() => {
+    // adapt the viewport, allows the instructor to have more vertical windows when sharing the screen
+    cy.viewport(600, 900)
+  })
+
   it('Should work', () => {
-    // Cypress docs https://docs.cypress.io/guides/overview/why-cypress
-    // ...
-    expect(true).to.equal(false)
+    // thanks to cypress.json, the url could be simply '/'
+    cy.visit('http://localhost:4100')
   })
 })
