@@ -13,3 +13,15 @@ it('should handle a failing assert after a passing one', () => {
   expect(true).equal(true);
   expect(true).equal(false);
 })
+
+describe('TodoMVC', function () {
+  beforeEach(function () {
+    cy.visit('/')
+  })
+
+  context('New Todo', { tags: '@adding' }, function () {
+    it('should fail on this test', function () {
+      expect(true).equal(false);
+    })
+  })
+})
